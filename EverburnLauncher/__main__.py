@@ -1,6 +1,6 @@
 if __name__ != '__main__': exit()
 
-from subprocess import run, CompletedProcess
+from subprocess import CompletedProcess
 from sys import exit
 
 print("Starting Everburn...")
@@ -13,6 +13,7 @@ from EverburnLauncher.Utils import *
 Alive = True
 Commands = {
 	"start": lambda Arguments: Start_Bot(Bots, Tokens, Arguments),
+	"stop": lambda Arguments: Stop_Bot(Bots, Arguments),
 	"report": lambda Arguments: Generate_Report(Bots, Tokens),
 	"restart": lambda Arguments: Restart(Arguments),
 	"exit": exit,
@@ -31,9 +32,9 @@ with open("Tokens.txt") as TokensFile:
 while Alive:
 	AdminInput = input()
 	print("Input command: ", AdminInput)
-	try:
-		Arguments = AdminInput.split(" ")
-		Command = Arguments[0]
+	Arguments = AdminInput.split(" ")
+	Command = Arguments[0]
+	if Command in Commands.keys():
 		Commands[Command](Arguments[1:])
-	except KeyError:
+	else:
 		print("Invalid command.")

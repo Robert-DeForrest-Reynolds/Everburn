@@ -1,18 +1,37 @@
-from subprocess import Popen, CompletedProcess
+from subprocess import Popen
 from sys import exit
 from os import system
 
-def Start_Bot(Bots:dict[str:CompletedProcess], Tokens:dict[str:str], Arguments:list[str]) -> None | str:
-	if Arguments[0].isdigit():
-		BotSelection = int(Arguments[0])
-		print(BotSelection)
+
+def Validate_Selection(Selection) -> None | str:
+	if Selection.isdigit():
+		BotSelection = int(Selection)
+		return BotSelection - 1
 	else:
-		return "ERROR: Selection input was not a digit"
-	
-	BotName = list(Bots.keys())[BotSelection-1]
+		print("ERROR: Selection input was not a digit")
+		return None
+
+
+def Start_Bot(Bots:dict[str:Popen], Tokens:dict[str:str], Arguments:list[str]) -> None | str:
+	Selection = Validate_Selection(Arguments[0])
+	if Selection == None: return
+	BotName = list(Bots.keys())[Selection]
 	BotToken = Tokens[BotName]
-	CallCommand = f".venv\\Scripts\\python.exe -B {BotName}\\Bot\\Commence.py {BotToken} {BotName}"
+	CallCommand = f".venv\\Scripts\\python.exe -B Bots\\{BotName}\\Bot\\Commence.py {BotToken} {BotName}"
 	BotInstance = Popen(CallCommand)
+	Bots[BotName] = BotInstance
+	print(f"Started {BotName}")
+	Generate_Report(Bots, Tokens)
+
+	
+def Stop_Bot(Bots:dict[str:Popen], Arguments:list[str]) -> None | str:
+	Selection = Validate_Selection(Arguments[0])
+	if Selection == None: return
+	BotName = list(Bots.keys())[Selection]
+	if Bots[BotName] != None:
+		Bots[BotName].kill()
+		Bots[BotName] = None
+		print(f"Stopped {BotName}")
 
 
 def Restart(Arguments:list[str]):
@@ -22,7 +41,7 @@ def Restart(Arguments:list[str]):
 		exit()
 
 
-def Generate_Report(Bots:dict[str:CompletedProcess], Tokens:dict[str:str]) -> str:
+def Generate_Report(Bots:dict[str:Popen], Tokens:dict[str:str]) -> str:
 	Report = ""
 	Names = []
 	Statuses = []
