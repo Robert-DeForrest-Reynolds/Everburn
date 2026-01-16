@@ -1,0 +1,8 @@
+# Ignore Bot Project Directories
+Desmond
+Mogly
+TheMainEvent
+
+Tokens.txt
+
+*.log
