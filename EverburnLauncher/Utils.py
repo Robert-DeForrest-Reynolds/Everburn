@@ -1,9 +1,14 @@
-from subprocess import Popen
+from subprocess import Popen, PIPE, STDOUT
 from sys import exit
 from os import system
 
 
-def Validate_Selection(Selection) -> None | str:
+def Send(Bot:Popen, Line: str):
+    Bot.stdin.write(Line + "\n")
+    Bot.stdin.flush()
+
+
+def Validate_Selection(Selection:str) -> None | str:
 	if Selection.isdigit():
 		BotSelection = int(Selection)
 		return BotSelection - 1
@@ -18,13 +23,18 @@ def Start_Bot(Bots:dict[str:Popen], Tokens:dict[str:str], Arguments:list[str]) -
 	BotName = list(Bots.keys())[Selection]
 	BotToken = Tokens[BotName]
 	CallCommand = f".venv\\Scripts\\python.exe -B Bots\\{BotName}\\Bot\\Commence.py {BotToken} {BotName}"
-	BotInstance = Popen(CallCommand)
+	BotInstance = Popen(CallCommand,
+						stdin=PIPE,
+						stdout=PIPE,
+						stderr=STDOUT,
+						text=True)
 	Bots[BotName] = BotInstance
 	print(f"Started {BotName}")
+	Send(BotInstance, "Hell to the yes")
 	Generate_Report(Bots, Tokens)
 
 	
-def Stop_Bot(Bots:dict[str:Popen], Arguments:list[str]) -> None | str:
+def Stop_Bot(Bots:dict[str:Popen], Tokens, Arguments:list[str]) -> None | str:
 	Selection = Validate_Selection(Arguments[0])
 	if Selection == None: return
 	BotName = list(Bots.keys())[Selection]
@@ -32,6 +42,7 @@ def Stop_Bot(Bots:dict[str:Popen], Arguments:list[str]) -> None | str:
 		Bots[BotName].kill()
 		Bots[BotName] = None
 		print(f"Stopped {BotName}")
+		Generate_Report(Bots, Tokens)
 
 
 def Restart(Arguments:list[str]):
