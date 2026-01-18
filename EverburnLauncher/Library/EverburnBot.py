@@ -1,6 +1,7 @@
 from logging import getLogger, Formatter,  DEBUG, INFO, Logger
 from logging.handlers import RotatingFileHandler
 
+
 from discord import Intents
 from discord.ext.commands import Bot as DiscordBot
 from discord.ext.commands import Context as DiscordContext
@@ -15,6 +16,7 @@ class EverburnBot:
 		Self.Token = argv[1]
 		Self.Name = argv[2]
 		Self.Alive = True # Controls async loops state
+		Self.Setup = None
 
 		I = Intents.all()
 		I.message_content = True
@@ -24,6 +26,8 @@ class EverburnBot:
 		Self.Command = Self.Name.lower()
 
 		Self.Admins = [
+            713798389908897822, # Zach (TheMadDM)
+            897410636819083304, # Robert (Cavan)
 		]
 
 		Self.ProtectedGuildIDs = [
@@ -40,6 +44,8 @@ class EverburnBot:
 
 			await Self.Bot.change_presence(activity=DiscordGame(f'.{Self.Command}'))
 			Self.Bot.loop.create_task(Self.Read_Stdin_Loop())
+			if Self.Setup:
+				await Self.Setup(Self)
 
 
 		@Self.Bot.command(name="sync")
@@ -57,7 +63,9 @@ class EverburnBot:
 			Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
 
 
-	def Output(Self, Message:str): print(Message, flush=True)
+	def Output(Self, Message:str):
+		Self.Log(Message)
+		print(Message, flush=True)
 
 
 	async def Read_Stdin_Loop(Self):
@@ -71,7 +79,7 @@ class EverburnBot:
 			Command = Line.strip()
 
 			if Command == "stop":
-				Self.Log(f"Everburn is closing {Self.Name}...")
+				Self.Output(f"Everburn is closing {Self.Name}...")
 				Self.Alive = False
 				await Self.Bot.close()
 				return
@@ -82,13 +90,6 @@ class EverburnBot:
 		DateTimeFormat = '%Y-%m-%d %H:%M:%S'
 		MoglyFormatter = Formatter('[{asctime}] [{levelname:<8}] {name}: {message}', DateTimeFormat, style='{')
 		FileHandler.setFormatter(MoglyFormatter)
-
-		Self.Logger = getLogger()
-		Self.Logger.setLevel(INFO)
-		for handler in list(Self.Logger.handlers):
-			Self.Logger.removeHandler(handler)
-		Self.Logger.propagate = False
-		Self.Logger.addHandler(FileHandler)
 
 		DiscordLogger:Logger = getLogger('discord')
 		DiscordLogger.setLevel(DEBUG)
@@ -103,7 +104,14 @@ class EverburnBot:
 			Child.addHandler(FileHandler)
 			Child.propagate = False
 
-		Self.Log("Logger is setup")
+		Self.Logger = getLogger()
+		Self.Logger.setLevel(INFO)
+		# for handler in list(Self.Logger.handlers):
+		# 	Self.Logger.removeHandler(handler)
+		Self.Logger.propagate = False
+		Self.Logger.addHandler(FileHandler)
+
+		Self.Output("Logger is setup")
 
 	
 	def Log(Self, Message:str, Level:int=None):

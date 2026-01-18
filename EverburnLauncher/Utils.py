@@ -46,7 +46,7 @@ def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	if Selection == None: return
 	BotName = list(E.Bots.keys())[Selection]
 	BotToken = E.Tokens[BotName]
-	CallCommand = f".venv\\Scripts\\python.exe -B -m Bots.{BotName.replace(" ", "")} {BotToken} {BotName}"
+	CallCommand = f".venv\\Scripts\\python.exe -B -m Bots.{BotName.replace(" ", "").replace("Testing", "")} {BotToken} {BotName}"
 	BotInstance = Popen(CallCommand,
 						stdin=PIPE,
 						stdout=PIPE,

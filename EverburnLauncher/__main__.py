@@ -30,5 +30,5 @@ run(Main())
 Log(INFO, "Closing Everburn")
 
 if E.Restart:
-	Log(ERROR, "Restarting Everburn...")
+	Log(INFO, "Restarting Everburn...")
 	system("launcher") # need to eventually pass bots that were alive to be revived
