@@ -1,11 +1,12 @@
-from logging import getLogger, Formatter,  DEBUG, INFO, Logger, basicConfig
+from logging import getLogger, Formatter,  DEBUG, INFO, Logger
 from logging.handlers import RotatingFileHandler
+
 from discord import Intents
 from discord.ext.commands import Bot as DiscordBot
-from sys import argv
 from discord.ext.commands import Context as DiscordContext
 from discord import Game as DiscordGame
-from sys import stdin
+
+from sys import argv, stdin
 from asyncio import get_running_loop, to_thread
 
 
