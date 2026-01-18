@@ -2,10 +2,11 @@ from subprocess import Popen
 from asyncio import Queue
 
 from EverburnLauncher.Utils import *
+from EverburnLauncher.Logging import *
 
 class Everburn:
 	def __init__(Self):
-		Self.Log("Starting Everburn...")
+		Log(INFO, "Starting Everburn...")
 		Self.Alive:bool = True
 		Self.Restart:bool = False
 		Self.Bots:dict[str:Popen|None] = {}
@@ -32,7 +33,3 @@ class Everburn:
 
 	def Exit(Self):
 		Self.Alive = False
-
-
-	def Log(Self, Message:str):
-		print(f"Everburn:{Message}")

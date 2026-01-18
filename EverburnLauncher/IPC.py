@@ -6,6 +6,7 @@ if TYPE_CHECKING:
 
 from subprocess import Popen
 from asyncio import to_thread
+from EverburnLauncher.Logging import *
 
 
 def Announce(Bots:dict[str:Popen], Line: str):
@@ -51,4 +52,4 @@ async def User_Input_Loop(E:Everburn):
 		if Command in E.Commands.keys():
 			E.Commands[Command](Arguments[1:])
 		else:
-			E.Log("Invalid command.")
+			Log(ERROR, "Invalid command.")

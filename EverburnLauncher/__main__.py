@@ -8,6 +8,7 @@ from asyncio import run, create_task
 
 from EverburnLauncher.IPC import Execute_Queue, User_Input_Loop
 from EverburnLauncher.Utils import *
+from EverburnLauncher.Logging import *
 from EverburnLauncher.Everburn import Everburn
 
 
@@ -26,8 +27,8 @@ async def Main():
 
 run(Main())
 
-E.Log("Closing Everburn")
+Log(INFO, "Closing Everburn")
 
 if E.Restart:
-	E.Log("Restarting Everburn...")
+	Log(ERROR, "Restarting Everburn...")
 	system("launcher") # need to eventually pass bots that were alive to be revived
