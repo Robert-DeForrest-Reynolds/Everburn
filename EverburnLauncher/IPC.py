@@ -29,8 +29,7 @@ async def Execute_Queue(E:Everburn):
 		Split = Line.split(":")
 		BotName = Split[0]
 		Message = Split[1]
-		if Message == "STOPPED":
-			E.Bots[BotName] = None
+		if Message == "stopped": E.Bots[BotName] = None
 		print(Line)
 
 
@@ -38,7 +37,7 @@ async def Read_Stdout_Loop(E:Everburn, ProcessName:str, Process:Popen):
 	while E.Alive:
 		Line = await to_thread(Process.stdout.readline)  # blocking read in thread
 		if not Line:
-			await E.OutputQueue.put(f"{ProcessName}:<EOF>")
+			await E.OutputQueue.put(f"{ProcessName}:End of Process")
 			return
 		await E.OutputQueue.put(f"{ProcessName}:{Line.rstrip()}")
 
@@ -52,4 +51,4 @@ async def User_Input_Loop(E:Everburn):
 		if Command in E.Commands.keys():
 			E.Commands[Command](Arguments[1:])
 		else:
-			print("Invalid command.")
+			E.Log("Invalid command.")

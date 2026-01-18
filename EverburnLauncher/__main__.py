@@ -12,7 +12,7 @@ from EverburnLauncher.Utils import *
 
 class Everburn:
 	def __init__(Self):
-		print("Starting Everburn...")
+		Self.Log("Starting Everburn...")
 		Self.Alive:bool = True
 		Self.Restart:bool = False
 		Self.Bots:dict[str:Popen|None] = {}
@@ -41,6 +41,10 @@ class Everburn:
 		Self.Alive = False
 
 
+	def Log(Self, Message:str):
+		print(f"Everburn:{Message}")
+
+
 E = Everburn()
 
 
@@ -48,7 +52,7 @@ async def Main():
 	ExecutionQueue = create_task(Execute_Queue(E))
 	try:
 		await User_Input_Loop(E)
-		await Cleanup(E.Bots)
+		await Cleanup(E)
 	finally:
 		await E.OutputQueue.put(None)
 		await ExecutionQueue # wait for ExecutionQueue to finish before closing out       
@@ -56,8 +60,8 @@ async def Main():
 
 run(Main())
 
-print("Closing Everburn")
+E.Log("Closing Everburn")
 
 if E.Restart:
-	print("Restarting Everburn...")
+	E.Log("Restarting Everburn...")
 	system("launcher") # need to eventually pass bots that were alive to be revived

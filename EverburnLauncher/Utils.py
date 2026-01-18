@@ -12,36 +12,36 @@ from asyncio import create_task, sleep
 from EverburnLauncher.IPC import Announce, Read_Stdout_Loop, Send
 
 
-async def Cleanup(Bots: dict[str, Popen | None]):
-	print("Cleaning up...")
-	Announce(Bots, "stop")
+async def Cleanup(E:Everburn):
+	E.Log("Cleaning up...")
+	Announce(E.Bots, "stop")
 	while True:
 		Safe = True
-		for Bot in Bots.values():
+		for Bot in E.Bots.values():
 			if Bot and Bot.poll() is None:
 				Safe = False
 				break
 		if Safe:
-			print("Finished cleaning up")
+			E.Log("Finished cleaning up")
 			return
 		await sleep(0.1)
 
 
-def Validate_Selection(Selection:str) -> None | str:
+def Validate_Selection(E:Everburn, Selection:str) -> None | str:
 	if Selection.isdigit():
 		BotSelection = int(Selection)
 		return BotSelection - 1
 	else:
-		print("ERROR: Selection input was not a digit")
+		E.Log("ERROR: Selection input was not a digit")
 		return None
 
 
 def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
-	Selection = Validate_Selection(Arguments[0])
+	Selection = Validate_Selection(E, Arguments[0])
 	if Selection == None: return
 	BotName = list(E.Bots.keys())[Selection]
 	BotToken = E.Tokens[BotName]
-	CallCommand = f".venv\\Scripts\\python.exe -B Bots\\{BotName}\\Bot\\Commence.py {BotToken} {BotName}"
+	CallCommand = f".venv\\Scripts\\python.exe -B -m Bots.{BotName} {BotToken} {BotName}"
 	BotInstance = Popen(CallCommand,
 						stdin=PIPE,
 						stdout=PIPE,
@@ -49,12 +49,11 @@ def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 						text=True)
 	E.StdoutTasks[BotName] = create_task(Read_Stdout_Loop(E, BotName, BotInstance))
 	E.Bots[BotName] = BotInstance
-	print(f"Started {BotName}")
-	Generate_Report(E)
+	E.Log(f"Starting {BotName}...")
 
 	
 def Stop_Bot(E:Everburn, Arguments:list[str]) -> None | str:
-	Selection = Validate_Selection(Arguments[0])
+	Selection = Validate_Selection(E, Arguments[0])
 	if Selection == None: return
 	BotName = list(E.Bots.keys())[Selection]
 	Send(E.Bots[BotName], "stop")
@@ -89,4 +88,4 @@ def Generate_Report(E:Everburn) -> str:
 		Report += f"({BotSelectionNumber}) " + " " * (IndexBuffer - len(f"({BotSelectionNumber}) "))
 		Report += Name + " " * (NamesLength - len(Name)) + " ~ " + Statuses[Index] + TokenStatuses[Index] + "\n"
 	
-	print(Report)
+	E.Log("Report:\n" + Report)
