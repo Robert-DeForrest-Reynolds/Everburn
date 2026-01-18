@@ -21,7 +21,7 @@ class EverburnBot:
 		Self.Bot = DiscordBot(command_prefix='.', intents=I, help_command=None, description='description', case_insensitive=True)
 	
 		Self.Dashboard = None
-		Self.Command = "EverburnBot"
+		Self.Command = Self.Name.lower()
 
 		Self.Admins = [
 		]
@@ -48,13 +48,13 @@ class EverburnBot:
 			await Self.Bot.tree.sync()
 
 
-		if Self.Dashboard:
-			@Self.Bot.command(aliases=[f"{Self.Name.lower()}"])
-			async def Send_Dashboard(InitialContext:DiscordContext) -> None:
-				if InitialContext.guild.id not in Self.ProtectedGuildIDs: return
-				User = InitialContext.message.author
-				Self.Dashboard(User, InitialContext, Self)
-				Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
+		@Self.Bot.command(aliases=[f"{Self.Command}"])
+		async def Send_Dashboard(InitialContext:DiscordContext) -> None:
+			if Self.Dashboard == None: return
+			if InitialContext.guild.id not in Self.ProtectedGuildIDs: return
+			User = InitialContext.message.author
+			Self.Dashboard(User, InitialContext, Self)
+			Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
 
 
 	def Output(Self, Message:str): print(Message, flush=True)
