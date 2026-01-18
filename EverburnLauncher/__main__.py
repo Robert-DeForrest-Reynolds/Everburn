@@ -2,6 +2,7 @@ if __name__ != '__main__':
 	from sys import exit
 	exit(1)
 
+from os import system
 from subprocess import Popen
 from asyncio import Queue, run, create_task
 
@@ -13,6 +14,7 @@ class Everburn:
 	def __init__(Self):
 		print("Starting Everburn...")
 		Self.Alive:bool = True
+		Self.Restart:bool = False
 		Self.Bots:dict[str:Popen|None] = {}
 		Self.Tokens:dict[str:str] = {}
 		Self.OutputQueue: Queue = Queue()
@@ -22,7 +24,7 @@ class Everburn:
 			"start": lambda Arguments: Start_Bot(Self, Arguments),
 			"stop": lambda Arguments: Stop_Bot(Self, Arguments),
 			"report": lambda Arguments: Generate_Report(Self),
-			"restart": lambda Arguments: Restart(Arguments),
+			"restart": lambda Arguments: Restart(E, Arguments),
 			"exit": lambda Arguments: Self.Exit(),
 		}
 
@@ -55,3 +57,7 @@ async def Main():
 run(Main())
 
 print("Closing Everburn")
+
+if E.Restart:
+	print("Restarting Everburn...")
+	system("launcher") # need to eventually pass bots that were alive to be revived

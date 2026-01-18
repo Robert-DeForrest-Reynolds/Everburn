@@ -7,8 +7,7 @@ if TYPE_CHECKING:
 
 from subprocess import Popen, PIPE, STDOUT
 from sys import exit
-from os import system
-from asyncio import Queue, to_thread, create_task, sleep
+from asyncio import create_task, sleep
 
 from EverburnLauncher.IPC import Announce, Read_Stdout_Loop, Send
 
@@ -61,11 +60,11 @@ def Stop_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	Send(E.Bots[BotName], "stop")
 
 
-def Restart(Arguments:list[str]):
+def Restart(E:Everburn, Arguments:list[str]):
 	if len(Arguments) == 0:
-		print("Restarting Everburn...")
-		system("launcher")
-		exit()
+		Announce(E.Bots, "stop")
+		E.Restart = True
+		E.Alive = False
 
 
 def Generate_Report(E:Everburn) -> str:
@@ -84,7 +83,7 @@ def Generate_Report(E:Everburn) -> str:
 		Statuses.append("✅" if Process else "❌")
 		TokenStatuses.append(" (TOKEN MISSING)" if E.Tokens[Name] == "MISSING" else "")
 
-	IndexBuffer = 6
+	IndexBuffer = 6 # Default amount of spaces appended before name of bot
 	for Index, Name in enumerate(Names):
 		BotSelectionNumber = Index+1
 		Report += f"({BotSelectionNumber}) " + " " * (IndexBuffer - len(f"({BotSelectionNumber}) "))
