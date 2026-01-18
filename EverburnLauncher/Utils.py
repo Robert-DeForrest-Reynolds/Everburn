@@ -31,6 +31,10 @@ def Validate_Selection(E:Everburn, Selection:str) -> None | str:
 	if Selection.isdigit():
 		BotSelection = int(Selection)
 		return BotSelection - 1
+	elif Selection == "*":
+		for Index, Name in enumerate(E.Bots.keys()):
+			if E.Bots[Name] == None and "Testing" not in Name:
+				Start_Bot(E, [str(Index+1)])
 	else:
 		E.Log("ERROR: Selection input was not a digit")
 		return None
@@ -41,7 +45,7 @@ def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	if Selection == None: return
 	BotName = list(E.Bots.keys())[Selection]
 	BotToken = E.Tokens[BotName]
-	CallCommand = f".venv\\Scripts\\python.exe -B -m Bots.{BotName} {BotToken} {BotName}"
+	CallCommand = f".venv\\Scripts\\python.exe -B -m Bots.{BotName.replace(" ", "")} {BotToken} {BotName}"
 	BotInstance = Popen(CallCommand,
 						stdin=PIPE,
 						stdout=PIPE,
