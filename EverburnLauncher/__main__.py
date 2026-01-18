@@ -1,83 +1,57 @@
-if __name__ != '__main__': exit()
+if __name__ != '__main__':
+	from sys import exit
+	exit(1)
 
 from subprocess import Popen
-from sys import exit
-from asyncio import Queue, to_thread, run
+from asyncio import Queue, run, create_task
 
-print("Starting Everburn...")
-
-Bots:dict[str:Popen|None] = {}
-Tokens:dict[str:str] = {}
-OutputQueue: Queue = Queue()
-
+from EverburnLauncher.IPC import Execute_Queue, User_Input_Loop
 from EverburnLauncher.Utils import *
 
 
-async def Read_Stdout_Loop(ProcessName:str, Process:Popen, OutputQueue:Queue):
-	while True:
-		Line = await to_thread(Process.stdout.readline)  # blocking read in thread
-		if not Line:
-			await OutputQueue.put(f"[{ProcessName}] <EOF>")
-			return
-		await OutputQueue.put(f"[{ProcessName}] {Line.rstrip()}")
+class Everburn:
+	def __init__(Self):
+		print("Starting Everburn...")
+		Self.Alive:bool = True
+		Self.Bots:dict[str:Popen|None] = {}
+		Self.Tokens:dict[str:str] = {}
+		Self.OutputQueue: Queue = Queue()
+		Self.StdoutTasks: dict[str, object] = {}
+
+		Self.Commands = {
+			"start": lambda Arguments: Start_Bot(Self, Arguments),
+			"stop": lambda Arguments: Stop_Bot(Self, Arguments),
+			"report": lambda Arguments: Generate_Report(Self),
+			"restart": lambda Arguments: Restart(Arguments),
+			"exit": lambda Arguments: Self.Exit(),
+		}
+
+		with open("Tokens.txt") as TokensFile:
+			for Line in TokensFile.readlines():
+				Line = Line.strip()
+				if Line == "": continue
+				Split = Line.split(" = ")
+				Self.Tokens.update({Split[0]:Split[1]})
+				Self.Bots.update({Split[0]:None})
 
 
-async def Print_Loop(OutputQueue:Queue):
-	while True:
-		Line = await OutputQueue.get()
-		if Line is None:
-			return
-		print(Line)
+	def Exit(Self):
+		Self.Alive = False
 
 
-async def User_Input_Loop(Bots: dict[str, Popen]):
-	while True:
-		UserLine = await to_thread(input)  # reads console without blocking event loop
-		UserLine = UserLine.rstrip("\n")
-		print("Input command: ", UserLine)
-		Arguments = UserLine.split(" ")
-		Command = Arguments[0]
-		if Command in Commands.keys():
-			Commands[Command](Arguments[1:])
-		else:
-			print("Invalid command.")
-
-		# Broadcast user input to all Bots (barebones)
-		for Process in Bots.values():
-			if Process != None:
-				if Process.poll() is None:
-					Process.stdin.write(UserLine + "\n")
-					Process.stdin.flush()
-
-
-
-Alive = True
-Commands = {
-	"start": lambda Arguments: Start_Bot(Bots, Tokens, Arguments),
-	"stop": lambda Arguments: Stop_Bot(Bots, Tokens, Arguments),
-	"report": lambda Arguments: Generate_Report(Bots, Tokens),
-	"restart": lambda Arguments: Restart(Arguments),
-	"send": lambda Arguments: Send(Bots, " ".join(Arguments)),
-	"exit": exit,
-}
-
-
-with open("Tokens.txt") as TokensFile:
-	for Line in TokensFile.readlines():
-		Line = Line.strip()
-		if Line == "": continue
-		Split = Line.split(" = ")
-		Tokens.update({Split[0]:Split[1]})
-		Bots.update({Split[0]:None})
+E = Everburn()
 
 
 async def Main():
-	await User_Input_Loop(Bots)
+	ExecutionQueue = create_task(Execute_Queue(E))
+	try:
+		await User_Input_Loop(E)
+		await Cleanup(E.Bots)
+	finally:
+		await E.OutputQueue.put(None)
+		await ExecutionQueue # wait for ExecutionQueue to finish before closing out       
 
-	await OutputQueue.put(None)
-
-	for Process in Bots.values():
-		if Process.poll() is None:
-			Process.wait()
 
 run(Main())
+
+print("Closing Everburn")

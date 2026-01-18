@@ -1,11 +1,31 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+	from EverburnLauncher.__main__ import Everburn
+
+
+
 from subprocess import Popen, PIPE, STDOUT
 from sys import exit
 from os import system
+from asyncio import Queue, to_thread, create_task, sleep
+
+from EverburnLauncher.IPC import Announce, Read_Stdout_Loop, Send
 
 
-def Send(Bot:Popen, Line: str):
-    Bot.stdin.write(Line + "\n")
-    Bot.stdin.flush()
+async def Cleanup(Bots: dict[str, Popen | None]):
+	print("Cleaning up...")
+	Announce(Bots, "stop")
+	while True:
+		Safe = True
+		for Bot in Bots.values():
+			if Bot and Bot.poll() is None:
+				Safe = False
+				break
+		if Safe:
+			print("Finished cleaning up")
+			return
+		await sleep(0.1)
 
 
 def Validate_Selection(Selection:str) -> None | str:
@@ -17,32 +37,28 @@ def Validate_Selection(Selection:str) -> None | str:
 		return None
 
 
-def Start_Bot(Bots:dict[str:Popen], Tokens:dict[str:str], Arguments:list[str]) -> None | str:
+def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	Selection = Validate_Selection(Arguments[0])
 	if Selection == None: return
-	BotName = list(Bots.keys())[Selection]
-	BotToken = Tokens[BotName]
-	CallCommand = f".venv\\Scripts\\python.exe -B Bots\\{BotName}\\Bot\\Commence.py {BotToken} {BotName}"
+	BotName = list(E.Bots.keys())[Selection]
+	BotToken = E.Tokens[BotName]
+	CallCommand = f".venv\\Scripts\\python.exe -B Bots\\{BotName}\\Bot\\Commence.py {BotToken} {BotName} {Selection+1}"
 	BotInstance = Popen(CallCommand,
 						stdin=PIPE,
 						stdout=PIPE,
 						stderr=STDOUT,
 						text=True)
-	Bots[BotName] = BotInstance
+	E.StdoutTasks[BotName] = create_task(Read_Stdout_Loop(E, BotName, BotInstance))
+	E.Bots[BotName] = BotInstance
 	print(f"Started {BotName}")
-	Send(BotInstance, "Hell to the yes")
-	Generate_Report(Bots, Tokens)
+	Generate_Report(E)
 
 	
-def Stop_Bot(Bots:dict[str:Popen], Tokens, Arguments:list[str]) -> None | str:
+def Stop_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	Selection = Validate_Selection(Arguments[0])
 	if Selection == None: return
-	BotName = list(Bots.keys())[Selection]
-	if Bots[BotName] != None:
-		Bots[BotName].kill()
-		Bots[BotName] = None
-		print(f"Stopped {BotName}")
-		Generate_Report(Bots, Tokens)
+	BotName = list(E.Bots.keys())[Selection]
+	Send(E.Bots[BotName], "stop")
 
 
 def Restart(Arguments:list[str]):
@@ -52,21 +68,21 @@ def Restart(Arguments:list[str]):
 		exit()
 
 
-def Generate_Report(Bots:dict[str:Popen], Tokens:dict[str:str]) -> str:
+def Generate_Report(E:Everburn) -> str:
 	Report = ""
 	Names = []
 	Statuses = []
 	TokenStatuses = []
 	
 	NamesLength = 0
-	for Name, Process in Bots.items():
+	for Name, Process in E.Bots.items():
 		NameLength = len(Name)
 		if NameLength > NamesLength:
 			NamesLength = NameLength
 
 		Names.append(Name)
 		Statuses.append("✅" if Process else "❌")
-		TokenStatuses.append(" (TOKEN MISSING)" if Tokens[Name] == "MISSING" else "")
+		TokenStatuses.append(" (TOKEN MISSING)" if E.Tokens[Name] == "MISSING" else "")
 
 	IndexBuffer = 6
 	for Index, Name in enumerate(Names):
