@@ -10,31 +10,35 @@ from discord import Game as DiscordGame
 from sys import argv, stdin
 from asyncio import get_running_loop, to_thread
 
+from EverburnLauncher.Library.Panel import Panel
+
 
 class EverburnBot:
 	def __init__(Self) -> None:
 		Self.Token = argv[1]
 		Self.Name = argv[2]
+		Self.Setup_Logger()
+		Self.Output(Self.Name)
 		Self.Alive = True # Controls async loops state
 		Self.Setup = None
+		Self.ViewContent:list = []
 
 		I = Intents.all()
 		I.message_content = True
 		Self.Bot = DiscordBot(command_prefix='.', intents=I, help_command=None, description='description', case_insensitive=True)
 	
-		Self.Dashboard = None
+		Self.Panel:Panel = Panel
+		Self.PanelInstance:Panel = None
 		Self.Command = Self.Name.lower()
 
 		Self.Admins = [
-            713798389908897822, # Zach (TheMadDM)
-            897410636819083304, # Robert (Cavan)
+			713798389908897822, # Zach (TheMadDM)
+			897410636819083304, # Robert (Cavan)
 		]
 
 		Self.ProtectedGuildIDs = [
 			1459985287055937793, # The Great Hearth
 		]
-
-		Self.Setup_Logger()
 
 
 		@Self.Bot.event
@@ -56,10 +60,10 @@ class EverburnBot:
 
 		@Self.Bot.command(aliases=[f"{Self.Command}"])
 		async def Send_Dashboard(InitialContext:DiscordContext) -> None:
-			if Self.Dashboard == None: return
+			if Self.Panel == None: return
 			if InitialContext.guild.id not in Self.ProtectedGuildIDs: return
 			User = InitialContext.message.author
-			Self.Dashboard(User, InitialContext, Self)
+			Self.Panel(InitialContext, Self)
 			Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
 
 
