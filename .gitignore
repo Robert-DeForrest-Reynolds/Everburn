@@ -1,8 +1,5 @@
 # Ignore Bot Project Directories
 Bots/
-
 Tokens.txt
-
 *.log
-
-test\
+MainEvent.db

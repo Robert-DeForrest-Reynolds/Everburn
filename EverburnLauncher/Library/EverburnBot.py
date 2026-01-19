@@ -2,7 +2,7 @@ from logging import getLogger, Formatter,  DEBUG, INFO, Logger
 from logging.handlers import RotatingFileHandler
 
 
-from discord import Intents
+from discord import Intents, Guild
 from discord.ext.commands import Bot as DiscordBot
 from discord.ext.commands import Context as DiscordContext
 from discord import Game as DiscordGame
@@ -22,6 +22,7 @@ class EverburnBot:
 		Self.Alive = True # Controls async loops state
 		Self.Setup = None
 		Self.ViewContent:list = []
+		Self.TheGreatHearth:Guild = None
 
 		I = Intents.all()
 		I.message_content = True
