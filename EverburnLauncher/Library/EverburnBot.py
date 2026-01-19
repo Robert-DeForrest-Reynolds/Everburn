@@ -52,10 +52,11 @@ class EverburnBot:
 				await Self.Setup(Self)
 
 
-		@Self.Bot.command(name="sync")
+		@Self.Bot.command(name=f"{Self.Name}_sync")
 		async def sync(Context:DiscordContext):
 			if Context.message.author.id not in Self.Admins: return
 			await Self.Bot.tree.sync()
+			await Context.message.channel.send("Synced command tree")
 
 
 		@Self.Bot.command(aliases=[f"{Self.Command}"])
