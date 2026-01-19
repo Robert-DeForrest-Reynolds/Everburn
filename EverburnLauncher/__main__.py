@@ -5,6 +5,7 @@ if __name__ != '__main__':
 
 from os import system
 from asyncio import run, create_task
+from sqlite3 import connect
 
 from EverburnLauncher.IPC import Execute_Queue, User_Input_Loop
 from EverburnLauncher.Utils import *
@@ -25,7 +26,24 @@ async def Main():
 		await ExecutionQueue # wait for ExecutionQueue to finish before closing out       
 
 
+Connection = connect("MainEvent.db")
+
+Cursor = Connection.cursor()
+
+Cursor.execute("""
+CREATE TABLE IF NOT EXISTS Fighters (
+    FighterId   INTEGER PRIMARY KEY AUTOINCREMENT,
+    OwnerId     TEXT NOT NULL,
+    Name        TEXT NOT NULL,
+    Level       INTEGER NOT NULL DEFAULT 1,
+    CreatedAt   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+""")
+
+
 run(Main())
+
+Connection.close()
 
 Log(INFO, "Closing Everburn")
 

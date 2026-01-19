@@ -1,23 +1,4 @@
-2. Cleanup logic is correct but fragile
-
-Your cleanup loop works because bots are well-behaved.
-
-If one bot:
-
-deadlocks
-
-blocks stdin
-
-never exits
-
-Everburn will wait forever.
-
-You’ll eventually want:
-
-timeout escalation
-
-forced terminate
-
-“unclean shutdown” logging
-
-Not now. But it will come.
+- Server Background Image
+- Shop Background Image
+- Background Images for Each Individual Bot
+- Image for Premium Pass
