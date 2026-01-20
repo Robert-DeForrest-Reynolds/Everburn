@@ -3,6 +3,7 @@ from logging.handlers import RotatingFileHandler
 
 
 from discord import Intents, Guild
+from discord import Interaction as DiscordInteraction
 from discord.ext.commands import Bot as DiscordBot
 from discord.ext.commands import Context as DiscordContext
 from discord import Game as DiscordGame
@@ -23,6 +24,7 @@ class EverburnBot:
 		Self.Setup = None
 		Self.ViewContent:list = []
 		Self.TheGreatHearth:Guild = None
+		Self.EphemeralTimeout = 60 * 15
 
 		I = Intents.all()
 		I.message_content = True
@@ -54,19 +56,39 @@ class EverburnBot:
 
 
 		@Self.Bot.command(name=f"{Self.Name}_sync")
-		async def sync(Context:DiscordContext):
-			if Context.message.author.id not in Self.Admins: return
+		async def sync(InitialContext:DiscordContext):
+			if not Self.Validate_Context(InitialContext): return
 			await Self.Bot.tree.sync()
-			await Context.message.channel.send("Synced command tree")
+			await InitialContext.message.channel.send("Synced command tree")
 
 
 		@Self.Bot.command(aliases=[f"{Self.Command}"])
 		async def Send_Dashboard(InitialContext:DiscordContext) -> None:
+			if not await Self.Validate_Context(InitialContext): return
 			if Self.Panel == None: return
-			if InitialContext.guild.id not in Self.ProtectedGuildIDs: return
 			User = InitialContext.message.author
 			Self.Panel(InitialContext, Self)
 			Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
+
+
+	async def Validate_Context(Self, InitialContext:DiscordContext) -> None:
+		if InitialContext.guild == None:
+			await InitialContext.send("Please do not message The Great Heart's bots.\n" \
+			"Continuous messages will result in a ban from using the bot, and could result in a ban from the server altogether.")
+			return False
+		if InitialContext.guild.id not in Self.ProtectedGuildIDs: return False
+		if InitialContext.message.author.id not in Self.Admins: return False
+		return True
+
+
+	async def Validate_Interaction(Self, Interaction:DiscordInteraction) -> None:
+		if Interaction.guild == None:
+			await Interaction.response.send_message("Please do not message The Great Heart's bots.\n" \
+			"Continuous messages will result in a ban from using the bot, and could result in a ban from the server altogether.")
+			return False
+		if Interaction.guild.id not in Self.ProtectedGuildIDs: return False
+		if Interaction.user.id not in Self.Admins: return False
+		return True
 
 
 	def Output(Self, Message:str):
