@@ -41,7 +41,7 @@ async def Execute_Queue(E:Everburn):
 
 async def Read_Stdout_Loop(E:Everburn, ProcessName:str, Process:Popen):
 	while E.Alive:
-		Line = await to_thread(Process.stdout.readline)  # blocking read in thread
+		Line = await to_thread(Process.stdout.readline)
 		if not Line:
 			await E.OutputQueue.put(f"{ProcessName}:Process End")
 			return
@@ -50,7 +50,7 @@ async def Read_Stdout_Loop(E:Everburn, ProcessName:str, Process:Popen):
 
 async def User_Input_Loop(E:Everburn):
 	while E.Alive:
-		UserLine = await to_thread(input)  # reads console without blocking event loop
+		UserLine = await to_thread(input)
 		UserLine = UserLine.rstrip("\n")
 		Arguments = UserLine.split(" ")
 		Command = Arguments[0]
