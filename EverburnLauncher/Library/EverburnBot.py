@@ -1,4 +1,4 @@
-from logging import getLogger, Formatter,  DEBUG, INFO, Logger
+from logging import getLogger, Formatter, Logger
 from logging.handlers import RotatingFileHandler
 
 
@@ -12,6 +12,7 @@ from sys import argv, stdin
 from asyncio import get_running_loop, to_thread
 
 from EverburnLauncher.Library.Panel import Panel
+from EverburnLauncher.Logging import INFO, ERROR
 
 
 class EverburnBot:
@@ -19,7 +20,7 @@ class EverburnBot:
 		Self.Token = argv[1]
 		Self.Name = argv[2]
 		Self.Setup_Logger()
-		Self.Output(Self.Name)
+		Self.Send(Self.Name)
 		Self.Alive = True # Controls async loops state
 		Self.Setup = None
 		Self.ViewContent:list = []
@@ -91,14 +92,9 @@ class EverburnBot:
 		return True
 
 
-	def Output(Self, Message:str):
-		Self.Log(Message)
-		print(Message, flush=True)
-
-
 	async def Read_Stdin_Loop(Self):
 		Loop = get_running_loop()
-		Self.Output(f"Online, and listening...")
+		Self.Send(f"Online, and listening...")
 		while Self.Alive:
 			Line = await to_thread(stdin.readline)
 			if not Line:
@@ -107,7 +103,7 @@ class EverburnBot:
 			Command = Line.strip()
 
 			if Command == "stop":
-				Self.Output(f"Everburn is closing {Self.Name}...")
+				Self.Send(f"Everburn is closing {Self.Name}...")
 				Self.Alive = False
 				await Self.Bot.close()
 				return
@@ -120,7 +116,7 @@ class EverburnBot:
 		FileHandler.setFormatter(MoglyFormatter)
 
 		DiscordLogger:Logger = getLogger('discord')
-		DiscordLogger.setLevel(DEBUG)
+		DiscordLogger.setLevel(10) # 10 = DEBUG
 		for Handler in list(DiscordLogger.handlers):
 			DiscordLogger.removeHandler(Handler)
 		DiscordLogger.addHandler(FileHandler)
@@ -133,16 +129,21 @@ class EverburnBot:
 			Child.propagate = False
 
 		Self.Logger = getLogger()
-		Self.Logger.setLevel(INFO)
-		# for handler in list(Self.Logger.handlers):
-		# 	Self.Logger.removeHandler(handler)
+		Self.Logger.setLevel(20) # 20 = INFO
 		Self.Logger.propagate = False
 		Self.Logger.addHandler(FileHandler)
 
-		Self.Output("Logger is setup")
+		Self.Send("Logger is setup")
+
+
+	def Send(Self, Message:str, Type:str=INFO):
+		"""Send IPC message to Everburn"""
+		Self.Log(Message)
+		print(f"{Type}:{Message}", flush=True)
 
 	
 	def Log(Self, Message:str, Level:int=None):
+		"""Log to a file"""
 		if Level:
 			Self.Logger.log(Level, Message)
 		else:

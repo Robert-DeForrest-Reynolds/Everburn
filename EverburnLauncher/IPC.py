@@ -53,4 +53,4 @@ async def User_Input_Loop(E:Everburn):
 		if Command in E.Commands.keys():
 			E.Commands[Command](Arguments[1:])
 		else:
-			Log(ERROR, "Invalid command.")
+			EverLog("Invalid command.", ERROR)

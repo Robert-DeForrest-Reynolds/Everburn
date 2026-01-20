@@ -1,6 +1,8 @@
-INFO = "Info"
-ERROR = "Error"
+INFO = "INFO"
+ERROR = "ERROR"
+GET = "GET"
+SET = "SET"
 
-
-def Log(Type:str, Message:str):
-	print(f"Everburn:{Type}:{Message}")
+def EverLog(Message:str, Type:str=INFO):
+	"""Everburn's log function. Prints to console"""
+	print(f"Everburn:{Type}:{Message}", flush=True)

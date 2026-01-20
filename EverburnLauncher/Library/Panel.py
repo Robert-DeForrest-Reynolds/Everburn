@@ -52,7 +52,7 @@ class Panel:
 
 
     async def Reply_Panel(Self, Interaction:DiscordInteraction):
-        Self.Bot.Log(f"References: {getrefcount(Self)}")
+        # Self.Bot.Log(f"References: {getrefcount(Self)}")
 
         LogMessage = f"{Self.User.name} called for a dashboard"
         Self.Bot.Log(LogMessage)

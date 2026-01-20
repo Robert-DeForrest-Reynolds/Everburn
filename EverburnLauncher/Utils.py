@@ -14,7 +14,7 @@ from EverburnLauncher.IPC import Announce, Read_Stdout_Loop, Send
 
 
 async def Cleanup(E:Everburn):
-	Log(INFO, "Cleaning up...")
+	EverLog("Cleaning up...")
 	Announce(E.Bots, "stop")
 	while True:
 		Safe = True
@@ -23,7 +23,7 @@ async def Cleanup(E:Everburn):
 				Safe = False
 				break
 		if Safe:
-			Log(INFO, "Finished cleaning up")
+			EverLog("Finished cleaning up")
 			return
 		await sleep(0.1)
 
@@ -37,7 +37,7 @@ def Validate_Selection(E:Everburn, Selection:str) -> None | str:
 			if E.Bots[Name] == None and "Testing" not in Name:
 				Start_Bot(E, [str(Index+1)])
 	else:
-		Log(ERROR, "Selection input was not a digit")
+		EverLog("Selection input was not a digit", ERROR)
 		return None
 
 
@@ -55,18 +55,18 @@ def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 						text=True)
 	E.StdoutTasks[BotName] = create_task(Read_Stdout_Loop(E, BotName, BotInstance))
 	E.Bots[BotName] = BotInstance
-	Log(INFO, f"Starting {BotName}...")
+	EverLog(f"Starting {BotName}...")
 
 	
 def Stop_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	if not Arguments:
-		Log(ERROR, "No arguments given to start command.")
+		EverLog("No arguments given to start command.", ERROR)
 		return
 	Selection = Validate_Selection(E, Arguments[0])
 	if Selection == None: return
 	BotName = list(E.Bots.keys())[Selection]
 	Send(E.Bots[BotName], "stop")
-	Log(INFO, f"Stopping {BotName}...")
+	EverLog(f"Stopping {BotName}...")
 
 
 def Restart(E:Everburn, Arguments:list[str]):
@@ -98,4 +98,4 @@ def Generate_Report(E:Everburn) -> str:
 		Report += f"({BotSelectionNumber}) " + " " * (IndexBuffer - len(f"({BotSelectionNumber}) "))
 		Report += Name + " " * (NamesLength - len(Name)) + " ~ " + Statuses[Index] + TokenStatuses[Index] + "\n"
 	
-	Log(INFO, "Report:\n" + Report + "\n-------")
+	EverLog("Report:\n" + Report + "\n-------")

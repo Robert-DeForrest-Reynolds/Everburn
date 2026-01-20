@@ -45,8 +45,8 @@ run(Main())
 
 Connection.close()
 
-Log(INFO, "Closing Everburn")
+EverLog("Closing Everburn")
 
 if E.Restart:
-	Log(INFO, "Restarting Everburn...")
+	EverLog("Restarting Everburn...")
 	system("launcher") # need to eventually pass bots that were alive to be revived

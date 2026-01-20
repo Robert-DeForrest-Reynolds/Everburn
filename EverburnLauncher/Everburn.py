@@ -6,7 +6,7 @@ from EverburnLauncher.Logging import *
 
 class Everburn:
 	def __init__(Self):
-		Log(INFO, "Starting Everburn...")
+		EverLog("Starting Everburn...")
 		Self.Alive:bool = True
 		Self.Restart:bool = False
 		Self.Bots:dict[str:Popen|None] = {}
