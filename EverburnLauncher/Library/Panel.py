@@ -67,7 +67,6 @@ class Panel:
         await Interaction.response.edit_message(view=Self.View, embed=Self.Embed)
 
 
-
     async def Send_Panel(Self, InitialContext:DiscordContext):
         Self.Bot.Log(f"References: {getrefcount(Self)}")
 

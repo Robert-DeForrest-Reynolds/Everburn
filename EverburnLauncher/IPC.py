@@ -29,9 +29,13 @@ async def Execute_Queue(E:Everburn):
 			return
 		Split = Line.split(":")
 		BotName = Split[0]
-		Message = Split[1]
-		if Message == "Process End": E.Bots[BotName] = None
-		if Message == "stopped": E.Bots[BotName] = None
+		Type = Split[1]
+		Message = Split[2]
+		if Type == GET:
+			Send(E.Bots[BotName], "example_data")
+		elif Type == INFO:
+			if Message == "Process End": E.Bots[BotName] = None
+			if Message == "stopped": E.Bots[BotName] = None
 		print(Line)
 
 

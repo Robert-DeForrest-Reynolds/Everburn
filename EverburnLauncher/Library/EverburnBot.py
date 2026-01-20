@@ -100,13 +100,19 @@ class EverburnBot:
 			if not Line:
 				return
 
-			Command = Line.strip()
+			Line = Line.strip()
 
-			if Command == "stop":
+			if Line == "stop":
 				Self.Send(f"Everburn is closing {Self.Name}...")
 				Self.Alive = False
 				await Self.Bot.close()
 				return
+			else:
+				Self.Use_Data(Line)
+
+
+	def Use_Data(Self, Data:str):
+		Self.Send(f"Obtained: {Data}")
 
 
 	def Setup_Logger(Self):
