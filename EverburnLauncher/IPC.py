@@ -28,14 +28,28 @@ async def Execute_Queue(E:Everburn):
 		if Line is None:
 			return
 		Split = Line.split(":")
-		BotName = Split[0]
-		Type = Split[1]
-		Message = Split[2]
-		if Type == GET:
-			Send(E.Bots[BotName], "example_data")
-		elif Type == INFO:
-			if Message == "Process End": E.Bots[BotName] = None
-			if Message == "stopped": E.Bots[BotName] = None
+		if len(Split) == 2:
+			if Type == INFO:
+				if Message == "Process End": E.Bots[BotName] = None
+				if Message == "stopped": E.Bots[BotName] = None
+		elif len(Split) == 3:
+			BotName = Split[0]
+			Type = Split[1]
+			Message = Split[2]
+			if Type == SET:
+				RequestSplit = Message.split("|")
+				Request = RequestSplit[0]
+				Data = RequestSplit[1].split(",")
+				E.DesmondCursor.execute("INSERT OR IGNORE INTO Players (ID, Name) VALUES (?,?)", (int(Data[0]), Data[1]))
+				E.DesmondDB.commit()
+				Send(E.Bots[BotName], "SET-ACK")
+			if Type == GET:
+				RequestSplit = Message.split("|")
+				Request = RequestSplit[0]
+				Data = RequestSplit[1].split(",")
+				E.DesmondCursor.execute("SELECT * FROM Players WHERE ID=?", (int(Data[0]),))
+				Row = E.DesmondCursor.fetchone()
+				Send(E.Bots[BotName], f"DATA|{Row}")
 		print(Line)
 
 

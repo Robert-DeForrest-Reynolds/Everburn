@@ -26,24 +26,10 @@ async def Main():
 		await ExecutionQueue # wait for ExecutionQueue to finish before closing out       
 
 
-Connection = connect("MainEvent.db")
-
-Cursor = Connection.cursor()
-
-Cursor.execute("""
-CREATE TABLE IF NOT EXISTS Fighters (
-    FighterId   INTEGER PRIMARY KEY AUTOINCREMENT,
-    OwnerId     TEXT NOT NULL,
-    Name        TEXT NOT NULL,
-    Level       INTEGER NOT NULL DEFAULT 1,
-    CreatedAt   TEXT NOT NULL DEFAULT (datetime('now'))
-);
-""")
-
-
 run(Main())
 
-Connection.close()
+E.DesmondDB.close()
+E.MainEventDB.close()
 
 EverLog("Closing Everburn")
 

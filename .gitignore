@@ -2,4 +2,4 @@
 Bots/
 Tokens.txt
 *.log
-MainEvent.db
+*.db
