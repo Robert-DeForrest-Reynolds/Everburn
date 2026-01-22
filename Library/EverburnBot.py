@@ -10,8 +10,9 @@ from discord import Game as DiscordGame
 
 from sys import argv, stdin
 from asyncio import get_running_loop, to_thread
+from itertools import count
 
-from EverburnLauncher.Library.Panel import Panel
+from Library.Panel import Panel
 from EverburnLauncher.Logging import INFO, ERROR
 
 
@@ -26,6 +27,8 @@ class EverburnBot:
 		Self.ViewContent:list = []
 		Self.TheGreatHearth:Guild = None
 		Self.EphemeralTimeout = 60 * 15
+		Self.Requests = {}
+		Self.RequestCounter = count(1)
 
 		I = Intents.all()
 		I.message_content = True
@@ -108,11 +111,15 @@ class EverburnBot:
 				await Self.Bot.close()
 				return
 			else:
-				Self.Use_Data(Line)
+				RequestSplit = Line.split("~")
+				RequestID = RequestSplit[0]
+				Data = RequestSplit[1][1:len(RequestSplit[1])].replace(", ", ",") # normalize for when lists are output raw
+				Split = Data.split(",")
+				Handler = Self.Requests[RequestID](Split)
 
 
-	def Use_Data(Self, Data:str):
-		Self.Send(f"Obtained: {Data}")
+	def New_Request_ID(Self) -> int:
+		return str(next(Self.RequestCounter))
 
 
 	def Setup_Logger(Self):

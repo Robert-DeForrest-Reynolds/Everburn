@@ -7,6 +7,7 @@ if TYPE_CHECKING:
 from subprocess import Popen
 from asyncio import to_thread
 from EverburnLauncher.Logging import *
+from EverburnLauncher.DataInterface import DataInterfaceMapping
 
 
 def Announce(Bots:dict[str:Popen], Line: str):
@@ -17,7 +18,8 @@ def Announce(Bots:dict[str:Popen], Line: str):
 			Bot.stdin.flush()
 
 
-def Send(Bot:Popen, Line: str):
+def Send(BotName:str, Bot:Popen, Line: str):
+	# EverLog(f"{Line} -> {BotName}") #Debug Line
 	Bot.stdin.write(Line + "\n")
 	Bot.stdin.flush()
 
@@ -33,23 +35,20 @@ async def Execute_Queue(E:Everburn):
 				if Message == "Process End": E.Bots[BotName] = None
 				if Message == "stopped": E.Bots[BotName] = None
 		elif len(Split) == 3:
+			# Desmond:INFO:Fuck you.
+			# Desmond:DATA:0|1234, example_name
 			BotName = Split[0]
 			Type = Split[1]
 			Message = Split[2]
-			if Type == SET:
+			if Type == DATA:
 				RequestSplit = Message.split("|")
-				Request = RequestSplit[0]
-				Data = RequestSplit[1].split(",")
-				E.DesmondCursor.execute("INSERT OR IGNORE INTO Players (ID, Name) VALUES (?,?)", (int(Data[0]), Data[1]))
-				E.DesmondDB.commit()
-				Send(E.Bots[BotName], "SET-ACK")
-			if Type == GET:
-				RequestSplit = Message.split("|")
-				Request = RequestSplit[0]
-				Data = RequestSplit[1].split(",")
-				E.DesmondCursor.execute("SELECT * FROM Players WHERE ID=?", (int(Data[0]),))
-				Row = E.DesmondCursor.fetchone()
-				Send(E.Bots[BotName], f"DATA|{Row}")
+				DataCode = RequestSplit[0]
+				DataSplit = RequestSplit[1].split("~")
+				RequestID = DataSplit[0]
+				Data = DataSplit[1].split(",")
+				Datum = DataInterfaceMapping[DataCode](E, Data)
+				if Datum != None:
+					Send(BotName, E.Bots[BotName], f"{RequestID}~{Datum}")
 		print(Line)
 
 
