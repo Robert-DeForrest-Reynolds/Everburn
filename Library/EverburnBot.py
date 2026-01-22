@@ -113,9 +113,10 @@ class EverburnBot:
 			else:
 				RequestSplit = Line.split("~")
 				RequestID = RequestSplit[0]
-				Data = RequestSplit[1][1:len(RequestSplit[1])].replace(", ", ",") # normalize for when lists are output raw
+				Data = RequestSplit[1]
 				Split = Data.split(",")
 				Handler = Self.Requests[RequestID](Split)
+				Self.Requests.pop(RequestID)
 
 
 	def New_Request_ID(Self) -> int:

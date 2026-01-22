@@ -13,7 +13,7 @@ def Create_Player(E:Everburn, Data):
 def Get_Player(E:Everburn, Data):
 	E.DesmondCursor.execute("SELECT * FROM Players WHERE ID=?", (int(Data[0]),))
 	Row = E.DesmondCursor.fetchone()
-	return Row
+	return ",".join([str(Item) for Item in Row])
 
 
 def Update_Player():...
