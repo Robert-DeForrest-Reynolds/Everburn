@@ -9,6 +9,7 @@ from discord.ext.commands import Context as DiscordContext
 from discord import Game as DiscordGame
 
 from sys import argv, stdin
+from os.path import join
 from asyncio import get_running_loop, to_thread
 from itertools import count
 
@@ -124,7 +125,7 @@ class EverburnBot:
 
 
 	def Setup_Logger(Self):
-		FileHandler = RotatingFileHandler(f'Logs\\{Self.Name}.log', 32 * 1024 * 1024, 5, encoding='utf-8',)
+		FileHandler = RotatingFileHandler(join('Logs', f'{Self.Name}.log'), 32 * 1024 * 1024, 5, encoding='utf-8',)
 		DateTimeFormat = '%Y-%m-%d %H:%M:%S'
 		MoglyFormatter = Formatter('[{asctime}] [{levelname:<8}] {name}: {message}', DateTimeFormat, style='{')
 		FileHandler.setFormatter(MoglyFormatter)

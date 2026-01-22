@@ -1,10 +1,12 @@
 from subprocess import Popen
 from asyncio import Queue
-
 from sqlite3 import connect
+from sys import platform
+from os.path import join
 
 from EverburnLauncher.Utils import *
 from EverburnLauncher.Logging import *
+
 
 class Everburn:
 	def __init__(Self):
@@ -15,6 +17,11 @@ class Everburn:
 		Self.Tokens:dict[str:str] = {}
 		Self.OutputQueue: Queue = Queue()
 		Self.StdoutTasks: dict[str, object] = {}
+		Self.Platform = platform
+		if Self.Platform == "linux":
+			Self.PyPath = join(".venv", "bin", "python3")
+		else:
+			Self.PyPath = join(".venv", "Scripts", "python")
 
 		Self.Commands = {
 			"start": lambda Arguments: Start_Bot(Self, Arguments),
@@ -33,7 +40,7 @@ class Everburn:
 				Self.Bots.update({Split[0]:None})
 
 		
-		Self.DesmondDB = connect("Desmond.db")
+		Self.DesmondDB = connect(join("Data", "Desmond.db"))
 		Self.DesmondCursor = Self.DesmondDB.cursor()
 		Self.DesmondCursor.execute("""
 		CREATE TABLE IF NOT EXISTS Players (
@@ -45,7 +52,7 @@ class Everburn:
 		Self.DesmondDB.commit()
 
 
-		Self.MainEventDB = connect("MainEvent.db")
+		Self.MainEventDB = connect(join("Data", "MainEvent.db"))
 
 		Self.MainEventCursor = Self.MainEventDB.cursor()
 		Self.MainEventCursor.execute("""

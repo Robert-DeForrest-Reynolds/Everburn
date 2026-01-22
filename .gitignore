@@ -1,5 +1,5 @@
 # Ignore Bot Project Directories
 Bots/
+Data/
+Logs/
 Tokens.txt
-*.log
-*.db
