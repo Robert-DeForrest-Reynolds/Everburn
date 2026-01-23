@@ -140,13 +140,28 @@ class EverburnBot:
 		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
 		Row = Cursor.fetchone()
 		Wallet = Row[2]
-		Self.Send(Wallet)
 		if Amount > Wallet:
 			return False
 		else:
 			Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (Wallet-Amount,Member.id))
 			Connection.commit()
 			return True
+		
+
+	def Get_Player_Data(Self, Member:DiscordMember):
+		Self.Send(f"GET_PLAYER|{Member.id}")
+		Connection = connect(join("Data", "Desmond.db"))
+		Cursor = Connection.cursor()
+		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
+		Row = Cursor.fetchone()
+		Data = {
+			"ID":Row[0],
+			"Name":Row[1],
+			"Wallet":Row[2],
+			"Fighter Count":Row[3],
+			"Created At":Row[4],
+		}
+		return Data
 
 
 	def New_Request_ID(Self) -> int:
