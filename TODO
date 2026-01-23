@@ -8,6 +8,15 @@
 - ensure all interactions can only be used by the proper member
 
 
+# Desmond
+- Interally counting, slow-moding the channel or specific user's when necessary
+- Tracking a user's interaction with the server, and giving them experience more and more as they go on
+- Auditing tracking
+- User reporting
+- Checking percentage of duplicated messages, and warning the user through message, muting and/or banning if total messages exceed 5 and/or % of messages that are duplicates is %50
+- **"Civilian Arrest"**; users can make a complaint about someone, there is a range of claim types, and will be handled automatically depending on the severity, the person will be assumed guilty until further notice (Staff needs to handle these cases with a decent amount of haste); a single abuse of this moderation method *will* result in a ban, or a potentially a *lighter* punishment that is the complete revoking of "Civilian's Arrest". Civilian's Arrest can only be used for moderating anything behavioral/social: muting presumed bot accounts, muting people purposefully being toxic, using sexual content, etc.. It is not used to moderate cheating, or gameplay; users cannot revoke other user's access to game profiles/ability to play the games. It should only be used to affect a positive environment between users socially. Civilian's Arrest is an earned privilege, probably obtained after 4-6 weeks interacting with the server properly, or manually handed out in waves as behavior is observed.
+
+
 # The Main Event
 - player Challenging
 - validating fighter purchaser has no more than 25 fighters

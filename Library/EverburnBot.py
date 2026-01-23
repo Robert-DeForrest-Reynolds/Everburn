@@ -11,7 +11,7 @@ from discord import Game as DiscordGame
 
 from sys import argv, stdin
 from sqlite3 import connect
-from os.path import join
+from os.path import join, exists
 from asyncio import get_running_loop, to_thread
 from itertools import count
 
@@ -32,6 +32,8 @@ class EverburnBot:
 		Self.EphemeralTimeout = 60 * 15
 		Self.Requests = {}
 		Self.RequestCounter = count(1)
+		if exists(join("Data", "Desmond.db")):
+			Self.DesmondDB = connect(join("Data", "Desmond.db"))
 
 		I = Intents.all()
 		I.message_content = True
@@ -126,32 +128,21 @@ class EverburnBot:
 
 
 	def Get_Wallet(Self, Member:DiscordMember):
-		Connection = connect(join("Data", "Desmond.db"))
-		Cursor = Connection.cursor()
+		Cursor = Self.DesmondDB.cursor()
 		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
 		Row = Cursor.fetchone()
 		Wallet = Row[2]
 		return Wallet
-
+		
 	
-	def Transact(Self, Member:DiscordMember, Amount:int) -> None|tuple:
-		Connection = connect(join("Data", "Desmond.db"))
-		Cursor = Connection.cursor()
-		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
-		Row = Cursor.fetchone()
-		Wallet = Row[2]
-		if Amount > Wallet:
-			return False
-		else:
-			Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (Wallet-Amount,Member.id))
-			Connection.commit()
-			return True
+	def Transact(Self, Member:DiscordMember, FundsAfterPurchase:float) -> bool:
+		Cursor = Self.DesmondDB.cursor()
+		Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (FundsAfterPurchase,Member.id))
 		
 
 	def Get_Player_Data(Self, Member:DiscordMember):
 		Self.Send(f"GET_PLAYER|{Member.id}")
-		Connection = connect(join("Data", "Desmond.db"))
-		Cursor = Connection.cursor()
+		Cursor = Self.DesmondDB.cursor()
 		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
 		Row = Cursor.fetchone()
 		Data = {
