@@ -18,8 +18,8 @@
 
 
 # The Main Event
-- player Challenging
-- /challenge needs to collect both members fighters for selection
+- player challenging
+	- /challenge needs to collect both members fighters for selection
 - a bunch of AI fighters in the database that belong to the MainEvent bot
 - migrate the pit fighting logic to a module that can be reused for both challenges, and the pit
 - core simulation of arena fights
