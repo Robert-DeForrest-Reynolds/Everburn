@@ -4,11 +4,13 @@ from logging.handlers import RotatingFileHandler
 
 from discord import Intents, Guild
 from discord import Interaction as DiscordInteraction
+from discord import Member as DiscordMember
 from discord.ext.commands import Bot as DiscordBot
 from discord.ext.commands import Context as DiscordContext
 from discord import Game as DiscordGame
 
 from sys import argv, stdin
+from sqlite3 import connect
 from os.path import join
 from asyncio import get_running_loop, to_thread
 from itertools import count
@@ -63,7 +65,7 @@ class EverburnBot:
 
 		@Self.Bot.command(name=f"{Self.Name}_sync")
 		async def sync(InitialContext:DiscordContext):
-			if not Self.Validate_Context(InitialContext): return
+			if not await Self.Validate_Context(InitialContext): return
 			await Self.Bot.tree.sync()
 			await InitialContext.message.channel.send("Synced command tree")
 
@@ -121,6 +123,30 @@ class EverburnBot:
 				Split = Data.split(",")
 				Handler = Self.Requests[RequestID](Split)
 				Self.Requests.pop(RequestID)
+
+
+	def Get_Wallet(Self, Member:DiscordMember):
+		Connection = connect(join("Data", "Desmond.db"))
+		Cursor = Connection.cursor()
+		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
+		Row = Cursor.fetchone()
+		Wallet = Row[2]
+		return Wallet
+
+	
+	def Transact(Self, Member:DiscordMember, Amount:int) -> None|tuple:
+		Connection = connect(join("Data", "Desmond.db"))
+		Cursor = Connection.cursor()
+		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
+		Row = Cursor.fetchone()
+		Wallet = Row[2]
+		Self.Send(Wallet)
+		if Amount > Wallet:
+			return False
+		else:
+			Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (Wallet-Amount,Member.id))
+			Connection.commit()
+			return True
 
 
 	def New_Request_ID(Self) -> int:

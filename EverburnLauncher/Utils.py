@@ -5,7 +5,6 @@ if TYPE_CHECKING:
  
 
 from subprocess import Popen, PIPE, STDOUT
-from sys import exit
 from asyncio import create_task, sleep
 
 from EverburnLauncher.Logging import *
@@ -68,7 +67,7 @@ def Stop_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	Selection = Validate_Selection(E, Arguments[0])
 	if Selection == None: return
 	BotName = list(E.Bots.keys())[Selection]
-	Send(E.Bots[BotName], "stop")
+	Send(BotName, E.Bots[BotName], "stop")
 	EverLog(f"Stopping {BotName}...")
 
 

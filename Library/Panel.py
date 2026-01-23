@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from EverburnLauncher.Library.EverburnBot import EverburnBot
+    from Library.EverburnBot import EverburnBot
     
 from discord import Interaction as DiscordInteraction
 from discord import Member as DiscordMember

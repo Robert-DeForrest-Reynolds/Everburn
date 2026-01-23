@@ -1,6 +1,5 @@
 from subprocess import Popen
 from asyncio import Queue
-from sqlite3 import connect
 from sys import platform
 from os.path import join
 
