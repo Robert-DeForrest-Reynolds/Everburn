@@ -7,7 +7,6 @@ if TYPE_CHECKING:
 from subprocess import Popen
 from asyncio import to_thread
 from EverburnLauncher.Logging import *
-from EverburnLauncher.DataInterface import DataInterfaceMapping
 
 
 def Announce(Bots:dict[str:Popen], Line: str):
@@ -40,15 +39,7 @@ async def Execute_Queue(E:Everburn):
 			BotName = Split[0]
 			Type = Split[1]
 			Message = Split[2]
-			if Type == DATA:
-				RequestSplit = Message.split("|")
-				DataCode = RequestSplit[0]
-				DataSplit = RequestSplit[1].split("~")
-				RequestID = DataSplit[0]
-				Data = DataSplit[1].split(",")
-				Datum = DataInterfaceMapping[DataCode](E, Data)
-				if Datum != None:
-					Send(BotName, E.Bots[BotName], f"{RequestID}~{Datum}")
+			# handling commands when necessary
 		print(Line)
 
 

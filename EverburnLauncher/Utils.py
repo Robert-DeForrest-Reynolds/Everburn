@@ -2,8 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
 	from EverburnLauncher.__main__ import Everburn
-
-
+ 
 
 from subprocess import Popen, PIPE, STDOUT
 from sys import exit
@@ -18,6 +17,7 @@ async def Cleanup(E:Everburn):
 	Announce(E.Bots, "stop")
 	while True:
 		Safe = True
+		Bot:Popen
 		for Bot in E.Bots.values():
 			if Bot and Bot.poll() is None:
 				Safe = False

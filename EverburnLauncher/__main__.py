@@ -28,8 +28,6 @@ async def Main():
 
 run(Main())
 
-E.DesmondDB.close()
-E.MainEventDB.close()
 
 EverLog("Closing Everburn")
 

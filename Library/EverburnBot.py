@@ -37,6 +37,7 @@ class EverburnBot:
 	
 		Self.Panel:Panel = Panel
 		Self.PanelInstance:Panel = None
+		Self.PanelCallback = None
 		Self.Command = Self.Name.lower()
 
 		Self.Admins = [
@@ -57,7 +58,7 @@ class EverburnBot:
 			await Self.Bot.change_presence(activity=DiscordGame(f'.{Self.Command}'))
 			Self.Bot.loop.create_task(Self.Read_Stdin_Loop())
 			if Self.Setup:
-				await Self.Setup(Self)
+				await Self.Setup()
 
 
 		@Self.Bot.command(name=f"{Self.Name}_sync")
@@ -71,6 +72,8 @@ class EverburnBot:
 		async def Send_Dashboard(InitialContext:DiscordContext) -> None:
 			if not await Self.Validate_Context(InitialContext): return
 			if Self.Panel == None: return
+			if Self.PanelCallback:
+				Self.PanelCallback(InitialContext)
 			User = InitialContext.message.author
 			Self.Panel(InitialContext, Self)
 			Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
