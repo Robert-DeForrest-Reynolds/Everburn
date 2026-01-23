@@ -19,11 +19,8 @@
 
 # The Main Event
 - player Challenging
-- validating fighter purchaser has no more than 25 fighters
-- show fighters in `See Fighters`
 - /challenge needs to collect both members fighters for selection
-- need to be able to rename fighters
-- a bunch of fake fighters in the database that belong to the MainEvent bot
+- a bunch of AI fighters in the database that belong to the MainEvent bot
 - migrate the pit fighting logic to a module that can be reused for both challenges, and the pit
 - core simulation of arena fights
 - ability to sell fighters
@@ -31,8 +28,6 @@
 - betting phase for arena fights
 - pink-slip pit-fights
 - pink-slip arena brackets
-- implement naming modal when purchasing fighters
-- fighters need to have unique names; they need to be checked against the existing names
 - fighter auction; auction off fighters that belong to the Main Event
 	- fighters who sold their fighters to the Main Event will be available in auctions
 	- completely new fighters will also be available
