@@ -1,13 +1,34 @@
-- Server Background Image
-- Shop Background Image
-- Background Images for Each Individual Bot
-- Image for Premium Pass
-- Desmond detects reaction to #activities message for roles
-- Fighter Objects
-- Sending Fighter data to Everburn
-- Retrieving Fighter data from Everburn
-- Purchasing Fighters
-- Player Challenging
+# General
+- organize all notes into one
+- do an organizational refactor over all of the code
+- server background image
+- shop background image
+- background images for each individual bot
+- image for premium pass
+- ensure all interactions can only be used by the proper member
 
-- Roleplay Utilities
-	- Fake Profiles
+
+# The Main Event
+- player Challenging
+- validating fighter purchaser has no more than 25 fighters
+- show fighters in `See Fighters`
+- /challenge needs to collect both members fighters for selection
+- need to be able to rename fighters
+- a bunch of fake fighters in the database that belong to the MainEvent bot
+- migrate the pit fighting logic to a module that can be reused for both challenges, and the pit
+- core simulation of arena fights
+- ability to sell fighters
+- ability to trade fighters
+- betting phase for arena fights
+- pink-slip pit-fights
+- pink-slip arena brackets
+- implement naming modal when purchasing fighters
+- fighters need to have unique names; they need to be checked against the existing names
+- fighter auction; auction off fighters that belong to the Main Event
+	- fighters who sold their fighters to the Main Event will be available in auctions
+	- completely new fighters will also be available
+
+
+# Immersion Helper
+- roleplay utilities
+	- fake profiles
