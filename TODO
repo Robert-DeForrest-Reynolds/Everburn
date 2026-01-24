@@ -20,6 +20,7 @@
 # The Main Event
 - player challenging
 	- /challenge needs to collect both members fighters for selection
+	- need to have a minimum bet of $10
 - a bunch of AI fighters in the database that belong to the MainEvent bot
 - migrate the pit fighting logic to a module that can be reused for both challenges, and the pit
 - core simulation of arena fights
@@ -31,6 +32,7 @@
 - fighter auction; auction off fighters that belong to the Main Event
 	- fighters who sold their fighters to the Main Event will be available in auctions
 	- completely new fighters will also be available
+- create a script to inject all of the necessary fighter data
 
 
 # Immersion Helper

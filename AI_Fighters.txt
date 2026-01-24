@@ -1,0 +1,500 @@
+X-01
+X-02
+X-03
+X-05
+X-07
+X-09
+X-12
+X-16
+X-21
+X-34
+X-55
+X-88
+X-IV
+X-IX
+Y-01
+Y-04
+Y-06
+Y-10
+Y-13
+Y-17
+Y-22
+Y-29
+Y-41
+Y-60
+Z-00
+Z-02
+Z-05
+Z-08
+Z-11
+Z-19
+Z-27
+Z-33
+Z-48
+Z-99
+Z-VII
+Q-01
+Q-03
+Q-07
+Q-14
+Q-18
+Q-25
+Q-32
+Q-44
+Q-X
+K-02
+K-06
+K-09
+K-15
+K-20
+K-28
+K-37
+K-51
+K-XII
+Xen
+Xel
+Xor
+Xai
+Xyre
+Xek
+Xarn
+Zed
+Zyn
+Zor
+Zale
+Zek
+Zair
+Zeth
+Qor
+Qen
+Qix
+Quv
+Qal
+Qeth
+Kae
+Kor
+Kex
+Kyn
+Kal
+Kesh
+Kry
+Vex
+Vyn
+Vox
+Varn
+Vail
+Quiver
+Ashe
+Domino
+Juniper
+Kevin McHemin
+Philip P.
+Isaac Tosfer
+Iso
+Mino
+Kiljino
+Hammon
+Him
+The Thing
+Scarecrow
+Morivae
+Elerosa
+Tomstead
+Kyle Glass
+Nino the Pino
+Blackbird
+Gearstop
+Lorem
+Greg Hefly
+The Judge
+Hugh Manue
+Lovaera
+Henry Kevnir
+Bobby Jay
+Tomcat
+Killjoy
+Skorpion
+The Ice Wizard
+Puni
+Ackner
+Jay Perova
+Verolda
+Ghastin
+Ghost
+X-101
+X-114
+X-207
+Y-03B
+Y-77
+Z-404
+Q-09A
+Q-61
+K-90
+K-XV
+VX-3
+Cipher
+Latch
+Spindle
+Crosswire
+Deadlink
+Hardstop
+Failsafe
+Coldboot
+Ghostkey
+Backslash
+Checksum
+Deadbyte
+Lockstep
+Ashen
+Grave
+Cinder
+Warden
+Hollow
+Rook
+Crow
+Pale Man
+Iron Jack
+Long Tom
+Nightglass
+Snowblind
+Black Iron
+Stillwater
+Mr. Static
+The Auditor
+The Watcher
+The Broker
+The Listener
+The Man Upstairs
+The Second Voice
+The Tall One
+The Broken Judge
+The Last Guest
+Ike Holloway
+Jonah Kess
+Marko Pell
+Evan Cross
+Silas Reed
+Nate Calder
+Theo Black
+Miles Avery
+Arthur Knoll
+Peter Vance
+Unit Quiver
+Domino Six
+Juniper Vale
+Mino-Blue
+Kiln
+Hammerlock
+The Thing That Waits
+Black Finch
+Geargrind
+Human Error
+Kill Switch
+Joykiller
+Skorpion-X
+Puncture
+Ack-7
+Jay Vector
+Veridian
+Ghast
+Polter
+Wraithline
+Specter
+Afterimage
+X-311
+X-404B
+X-777
+Y-18A
+Y-222
+Z-000
+Z-13X
+Z-81
+Q-404
+Q-71B
+K-004
+K-66
+VX-17
+AX-09
+Bitrot
+Hardline
+Deadwire
+Coldchain
+Softfail
+SpareKey
+Nullspace
+Whitescreen
+Blackbox
+Rollback
+Cachemiss
+Ghostloop
+Kernel Panic
+Root Cause
+Ashfall
+Rattle
+Soot
+Grinder
+Knuckle
+Whetstone
+Iron Crow
+Bone White
+Gray Dog
+Red Ash
+Still Fang
+Cold River
+Black Hollow
+The Clerk
+The Warden
+The Caretaker
+The Middle Man
+The Third Hand
+The Pale Judge
+The Quiet One
+The Long Listener
+The Spare Body
+The Wrong Twin
+Caleb Marsh
+Elliot Vane
+Marcus Holt
+Noah Pike
+Julian Frost
+Owen Ward
+Reed Lawson
+Victor Hale
+Simon Cross
+Aaron Bell
+Mino Prime
+Kiln-Born
+Hammerfall
+Him-Again
+The Waiting Thing
+Black Gull
+Gearlock
+Human Factor
+Kill Routine
+Skorpion-Red
+Ice Prophet
+Veridian Fault
+Ghastling
+Poltergeist
+Wraithbound
+Spectral
+Afterecho
+Dead Still
+X-14
+X-27
+X-39
+X-52
+X-68
+X-73
+X-91
+X-104
+X-128
+Y-03
+Y-19
+Y-26
+Y-44
+Y-58
+Y-61
+Y-79
+Y-87
+Y-102
+Y-119
+Z-17
+Z-24
+Z-36
+Z-49
+Z-63
+Z-75
+Z-84
+Z-97
+Z-111
+Q-02
+Q-11
+Q-23
+Q-35
+Q-47
+Q-59
+Q-72
+Q-88
+Q-101
+Q-118
+K-05
+K-16
+K-41
+K-54
+K-67
+K-82
+K-95
+K-109
+K-123
+Rill
+Tarn
+Mire
+Koto
+Zune
+Axel
+Brim
+Cavo
+Drex
+Elda
+Fenn
+Goro
+Hale
+Irix
+Jett
+Karn
+Lumo
+Mako
+Nero
+Orin
+Pax
+Quin
+Raze
+Silo
+Teko
+Ulric
+Wren
+Xiro
+Yale
+Zano
+Redline
+Latchkey
+Coldwire
+Hardlimit
+Deadzone
+Lockout
+Tracepath
+Nullcode
+Ghostmark
+Firewall
+Payload
+Overclock
+Backtrace
+Killchain
+Rootkit
+Snowcrash
+Faultline
+Ironwall
+Sideband
+Handshake
+Outrider
+Blindspot
+Shortcircuit
+Spindown
+Watchdog
+Airgap
+Backdoor
+Failsilent
+Darkfiber
+Killframe
+Crosslink
+Packetloss
+Redstack
+Hotpatch
+Hardfork
+Gravel
+Flint
+Briar
+Slate
+Ember
+Drift
+Fallow
+Kestrel
+Ridge
+Sable
+Talon
+Umber
+Vagrant
+Willow
+Yarrow
+Zephyr
+Nightfall
+Stonecut
+Frostline
+Blackwater
+Ironfield
+Highroad
+Lowtide
+Starless
+Moonwake
+Dustmere
+Gravewind
+Coldharbor
+Stillness
+Redmark
+Bluehour
+Thornpath
+Winterlock
+The Archivist
+The Bailiff
+The Surveyor
+The Envoy
+The Custodian
+The Watchman
+The Ferryman
+The Groundskeeper
+The Arbitrator
+The Gatekeeper
+The Magistrate
+The Quartermaster
+The Librarian
+The Steward
+The Undertaker
+The Sentinel
+The Registrar
+The Beadle
+The Tallyman
+The Courier
+The Provost
+The Examiner
+The Factor
+The Comptroller
+The Writkeeper
+The Assessor
+Ashe Calder
+Silas Rowan
+Evan Mercer
+Miles Kade
+Arthur Bloom
+Caleb Knox
+Theo Warren
+Lucas Hale
+Owen Bishop
+Nathan Cross
+Elliot Moore
+Marcus Reed
+Simon Locke
+Peter Grant
+Henry Lawson
+Victor Shaw
+Noah Price
+Daniel Voss
+Michael Crane
+Robert Finch
+Samuel Drake
+Thomas Keller
+Isaac Ward
+Benjamin Holt
+Andrew Miles
+Joseph Turner
+David Quinn
+Morrow
+Hawthorn
+Glassfall
+Ravenport
+Stoneward
+Brackish
+Lowspire
+Eastmere
+Northwatch
+Saltplain
+Dunemarsh
+Highbarrow
+Westfall
+Deepreach
+Longshore
+Ironstead
+Frostmere
+Cinderholt
+Ashgrove
+Thornfield
