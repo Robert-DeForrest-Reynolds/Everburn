@@ -18,14 +18,13 @@
 
 
 # The Main Event
-- migrate the pit fighting logic to a module that can be reused for both challenges, and the pit
 - core simulation of arena fights
 - betting phase for arena fights
 - create a script to inject all of the necessary fighter data
 - popup notification if you have challenges, and alternative way to remind
-- ability to flag a challenge as a Collateral Bout
 
 **future**
+- ability to flag a challenge as a Collateral Bout
 - pink-slip arena brackets
 - ability to select no opponent fighter so they can choose
 - ability to trade fighters
