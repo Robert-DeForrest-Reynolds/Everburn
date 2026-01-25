@@ -56,6 +56,7 @@ class EverburnBot:
 
 		@Self.Bot.event
 		async def on_ready() -> None:
+			Self.TheGreatHearth = Self.Bot.get_guild(1459985287055937793)
 			LogMessage = f"{Self.Bot.user} has connected to Discord!"
 			Self.Logger.info(LogMessage)
 
@@ -127,17 +128,38 @@ class EverburnBot:
 				Self.Requests.pop(RequestID)
 
 
-	def Get_Wallet(Self, Member:DiscordMember):
+	def Get_Wallet(Self, Member:DiscordMember) -> float:
 		Cursor = Self.DesmondDB.cursor()
 		Cursor.execute("SELECT * FROM Players WHERE ID=?", (Member.id,))
 		Row = Cursor.fetchone()
 		Wallet = Row[2]
 		return Wallet
+	
+
+	def Add_To_Wallet(Self, Member:DiscordMember, Amount:float) -> float:
+		NewWallet = Self.Get_Wallet(Member) + Amount
+		Cursor = Self.DesmondDB.cursor()
+		Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (NewWallet, Member.id))
+		Self.DesmondDB.commit()
+	
+
+	def Subject_From_Wallet(Self, Member:DiscordMember, Amount:float) -> float:
+		NewWallet = Self.Get_Wallet(Member) - Amount
+		Cursor = Self.DesmondDB.cursor()
+		Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (NewWallet, Member.id))
+		Self.DesmondDB.commit()
+	
+
+	def Apply_Wallet(Self, Member:DiscordMember, NewAmount:float) -> float:
+		Cursor = Self.DesmondDB.cursor()
+		Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (NewAmount, Member.id))
+		Self.DesmondDB.commit()
 		
 	
 	def Transact(Self, Member:DiscordMember, FundsAfterPurchase:float) -> bool:
 		Cursor = Self.DesmondDB.cursor()
 		Cursor.execute("UPDATE Players SET Wallet = ? WHERE ID=?", (FundsAfterPurchase,Member.id))
+		Self.DesmondDB.commit()
 		
 
 	def Get_Player_Data(Self, Member:DiscordMember):
