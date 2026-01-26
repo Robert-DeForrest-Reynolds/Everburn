@@ -22,6 +22,10 @@ class EverburnBot:
 	def __init__(Self) -> None:
 		Self.Token = argv[1]
 		Self.Name = argv[2]
+		if "Testing" in Self.Name:
+			Self.Testing = True
+		else:
+			Self.Testing = False
 		Self.Setup_Logger()
 		Self.Send(Self.Name)
 		Self.Alive = True # Controls async loops state
@@ -43,6 +47,10 @@ class EverburnBot:
 		Self.PanelCallback = None
 		Self.Command = Self.Name.lower()
 
+		Self.Testers = [
+			
+		]
+
 		Self.Admins = [
 			713798389908897822, # Zach (TheMadDM)
 			897410636819083304, # Robert (Cavan)
@@ -63,12 +71,29 @@ class EverburnBot:
 			if Self.Setup:
 				await Self.Setup()
 
-
+		Self.Send(f"Command Prefix: {Self.Name}")
 		@Self.Bot.command(name=f"{Self.Name}_sync")
 		async def sync(InitialContext:DiscordContext):
 			if not await Self.Validate_Context(InitialContext): return
 			await Self.Bot.tree.sync()
 			await InitialContext.message.channel.send("Synced command tree")
+
+
+		@Self.Bot.command(name=f"{Self.Name}_unsync")
+		async def unsync(InitialContext:DiscordContext):
+			if not await Self.Validate_Context(InitialContext): return
+			Self.Bot.tree.clear_commands(guild=None)
+			await Self.Bot.tree.sync()
+			await InitialContext.message.channel.send("Unsynced command tree")
+
+
+	async def Dev_Channel_Gate(Self, Interaction:DiscordInteraction):
+		if Interaction.user.id in Self.Testers + Self.Admins:
+			return True
+		else:
+			await Interaction.response.defer(ephemeral=True)
+			await Interaction.delete_original_response()
+			return False
 
 
 	async def Validate_Context(Self, InitialContext:DiscordContext) -> None:
