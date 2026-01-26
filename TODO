@@ -22,6 +22,11 @@
 - betting phase for arena fights
 - create a script to inject all of the necessary fighter data
 - popup notification if you have challenges, and alternative way to remind
+- ability to challenge the Main Event directly
+- track and refresh panels when player data is updated at all
+- fighters earn experience when fight is over
+- fighters level up check
+- fighters gain add 2-6 points to each stat, each one rolled independently
 
 **future**
 - ability to flag a challenge as a Collateral Bout
