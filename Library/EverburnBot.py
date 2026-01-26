@@ -7,7 +7,6 @@ from discord import Interaction as DiscordInteraction
 from discord import Member as DiscordMember
 from discord.ext.commands import Bot as DiscordBot
 from discord.ext.commands import Context as DiscordContext
-from discord import Game as DiscordGame
 
 from sys import argv, stdin
 from sqlite3 import connect
@@ -60,7 +59,6 @@ class EverburnBot:
 			LogMessage = f"{Self.Bot.user} has connected to Discord!"
 			Self.Logger.info(LogMessage)
 
-			await Self.Bot.change_presence(activity=DiscordGame(f'.{Self.Command}'))
 			Self.Bot.loop.create_task(Self.Read_Stdin_Loop())
 			if Self.Setup:
 				await Self.Setup()
