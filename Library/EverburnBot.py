@@ -48,7 +48,7 @@ class EverburnBot:
 		Self.Command = Self.Name.lower()
 
 		Self.Testers = [
-			
+			291427263055134720,
 		]
 
 		Self.Admins = [
