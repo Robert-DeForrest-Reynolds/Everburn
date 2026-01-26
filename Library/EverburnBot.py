@@ -73,17 +73,6 @@ class EverburnBot:
 			await InitialContext.message.channel.send("Synced command tree")
 
 
-		@Self.Bot.command(aliases=[f"{Self.Command}"])
-		async def Send_Dashboard(InitialContext:DiscordContext) -> None:
-			if not await Self.Validate_Context(InitialContext): return
-			if Self.Panel == None: return
-			if Self.PanelCallback:
-				Self.PanelCallback(InitialContext)
-			User = InitialContext.message.author
-			Self.Panel(InitialContext, Self)
-			Self.Logger.info(f"{User.name}'s Dashboard sequence finished.")
-
-
 	async def Validate_Context(Self, InitialContext:DiscordContext) -> None:
 		if InitialContext.guild == None:
 			await InitialContext.send("Please do not message The Great Heart's bots.\n" \
@@ -175,10 +164,6 @@ class EverburnBot:
 			"Created At":Row[4],
 		}
 		return Data
-
-
-	def New_Request_ID(Self) -> int:
-		return str(next(Self.RequestCounter))
 
 
 	def Setup_Logger(Self):
