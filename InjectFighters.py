@@ -1,7 +1,7 @@
 from os.path import join
 from sqlite3 import connect
 
-FighterDB = connect(join("Data", "MainEvent.db"))
+FighterDB = connect(join("Data", "Crucible.db"))
 Cursor = FighterDB.cursor()
 
 with open("AI_Fighters.txt") as FightersFile:
