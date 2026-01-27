@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-	from Library.EverburnBot import EverburnBot
+	from Library.EverburnBot import EverburnBot as EB
 	
 from discord import Interaction as DiscordInteraction
 from discord import Member as DiscordMember
@@ -10,9 +10,9 @@ from asyncio import Task
 
 
 class Panel:
-	def __init__(Self, User:DiscordMember, Bot:EverburnBot) -> None:
+	def __init__(Self, User:DiscordMember, EverburnBot:EB) -> None:
 		Self.User = User
-		Self.Bot = Bot
+		Self.EverburnBot:EB = EverburnBot
 		Self.ViewTimeout = 60*5
 		Self.View = View(timeout=Self.ViewTimeout)
 		Self.View.on_timeout = Self.Cleanup_Panel
@@ -22,14 +22,14 @@ class Panel:
 
 
 	def __del__(Self):
-		Self.Bot.Send(f"{Self.User.name}'s called __del__ on panel")
+		Self.EverburnBot.Send(f"{Self.User.name}'s called __del__ on panel")
 
 
 	async def Referesh_Panel(Self):
 		for Item in Self.View.children:
 			Item.callback = None
 		Self.View.clear_items()
-		Self.Bot.Send("Finished Refreshing panel")
+		Self.EverburnBot.Send("Finished Refreshing panel")
 
 
 	async def Cleanup_Panel(Self):
@@ -43,5 +43,5 @@ class Panel:
 		Self.Task = None
 		OriginalMessage = await Self.OriginInteraction.original_response()
 		await OriginalMessage.delete()
-		Self.Bot.Send(f"Cleaned up {Self.User.name}'s panel")
+		Self.EverburnBot.Send(f"Cleaned up {Self.User.name}'s panel")
 
