@@ -47,7 +47,7 @@ def Start_Bot(E:Everburn, Arguments:list[str]) -> None | str:
 	BotNameFormatted = BotName.replace(" ", "")
 	BotToken = E.Tokens[BotName]
 	if E.Platform == 'linux':
-		CallCommand = [E.PyPath, '-B', '-m', f'Bots.{BotNameFormatted.replace("Testing", "")}', BotToken, BotNameFormatted.replace]
+		CallCommand = [E.PyPath, '-B', '-m', f'Bots.{BotNameFormatted.replace("Testing", "")}', BotToken, BotNameFormatted]
 	else:
 		CallCommand = f"{E.PyPath} -B -m Bots.{BotNameFormatted.replace("Testing", "")} {BotToken} {BotNameFormatted}"
 	BotInstance = Popen(CallCommand,
